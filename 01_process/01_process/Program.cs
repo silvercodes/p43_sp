@@ -57,11 +57,32 @@ using System.Diagnostics;
 
 // Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", "https://wikipedia.org --incognito");
 
-Console.WriteLine("Hello from .NET project");
+//Console.WriteLine("Hello from .NET project");
 
-Process.Start(@"C:\Users\ThinkPad\Desktop\111_test.exe");
+//Process.Start(@"C:\Users\ThinkPad\Desktop\111_test.exe");
 
 
+
+
+
+Console.Write("Enter PID: ");
+string? input = Console.ReadLine();
+
+try
+{
+    int pid = int.Parse(input);
+
+    Process p = Process.GetProcessById(pid);
+
+    ProcessModuleCollection modules = p.Modules;
+
+    foreach(ProcessModule m in modules)
+        Console.WriteLine($"{m.ModuleName}\t{m.ModuleMemorySize}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"ERROR: {ex.Message}");
+}
 
 
 #endregion

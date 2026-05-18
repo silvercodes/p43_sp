@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="01_process/01_process.csproj" />
+  <Project Path="02_assemblies_loading/02_assemblies_loading.csproj" Id="a22aff78-3ed0-4a2e-a430-f73d6a16ecdd" />
+  <Project Path="03_MathLib/03_MathLib.csproj" Id="cb6d5bcf-96a4-4720-8702-4bb845d1bde5" />
 </Solution>
