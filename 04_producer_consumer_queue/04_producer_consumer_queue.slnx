@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="04_producer_consumer_queue/04_producer_consumer_queue.csproj" />
+  <Project Path="PCQ/PCQ.csproj" />
+</Solution>
