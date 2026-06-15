@@ -272,24 +272,129 @@ using System.Text;
 
 #region Parallel
 
-Parallel.Invoke(
-    TestPrint,
-    () => Console.WriteLine("test lambda"),
-    () => Sum(3, 4)
-);
+//Parallel.Invoke(
+//    TestPrint,
+//    () => Console.WriteLine("test lambda"),
+//    () => Sum(3, 4)
+//);
+
+//void TestPrint()
+//{
+//    Thread.Sleep(2000);
+//    Console.WriteLine("testp print");
+//}
+
+//int Sum(int a, int b) => a + b;
 
 
 
 
-void TestPrint()
-{
-    Thread.Sleep(2000);
-    Console.WriteLine("testp print");
-}
+//ThreadPool.SetMinThreads(20, 2);
 
-int Sum(int a, int b) => a + b;
+//long time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+//Parallel.For(0, 20, i =>
+//{
+//    Console.WriteLine($"{Task.CurrentId}: {i}");
+//    Thread.Sleep(1000);
+//});
+
+//Console.WriteLine($"TIME = {DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - time}");
+
+
+
+
+
+//ThreadPool.SetMinThreads(10, 2);
+
+//long time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+//List<int> nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+//Parallel.ForEach(nums, n =>
+//{
+//    Thread.Sleep(1000);
+//    Console.WriteLine(n);
+//});
+
+//Console.WriteLine($"TIME = {DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - time}");
+
 
 
 
 #endregion
 
+
+#region Cancellation token
+
+//CancellationTokenSource cts = new CancellationTokenSource();
+//CancellationToken token = cts.Token;
+
+//Task t = new Task(() => 
+//{ 
+//    for (int i = 0; i < 10; ++i)
+//    {
+//        if (token.IsCancellationRequested)
+//        {
+//            Console.WriteLine("Cancelation requested");
+//            return;
+//        }
+//        Console.WriteLine(i);
+//        Thread.Sleep(1000);
+//    }
+//}, token);
+
+//t.Start();
+////
+////
+//Console.ReadLine();
+//cts.Cancel();
+
+
+
+
+using CancellationTokenSource cts = new CancellationTokenSource();
+CancellationToken token = cts.Token;
+
+Task t = new Task(() =>
+{
+    for (int i = 0; i < 10; ++i)
+    {
+        if (token.IsCancellationRequested)
+        {
+            token.ThrowIfCancellationRequested();       // throw TaskCanceledException
+        }
+        Console.WriteLine(i);
+        Thread.Sleep(1000);
+    }
+}, token);
+
+try
+{
+    t.Start();
+    //
+    //
+    Console.ReadLine();
+    cts.Cancel();
+
+    t.Wait();
+}
+catch (AggregateException ex)
+{
+    foreach(Exception e in ex.InnerExceptions)
+    {
+        if (e is TaskCanceledException)
+            Console.WriteLine("Task interupped");
+        else
+            Console.WriteLine($"ERROR: {e.Message}");
+    }
+}
+//finally
+//{
+//    cts.Dispose();
+//}
+
+Console.WriteLine(t.Status);
+
+
+#endregion

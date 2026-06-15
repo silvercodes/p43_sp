@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="05_tpl/05_tpl.csproj" />
+  <Project Path="06_async_await/06_async_await.csproj" Id="065cb781-a0bb-4a63-8d89-675c2453fd4e" />
 </Solution>
